@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<!-- Mikael A Mendoza/COMP467/CSUN Fall 2016-->
+<html>
+        <head>
+            <link rel="StyleSheet" type = "text/css" href = "vlogMe(sample1).css" media = " all" />
+            <title>VlogMe (sample)</title>
+            <script type="text/javascript">
+
+                var status=0;   //boolean, collapsed=0 slide-out=1
+                
+                //This function toggles the slider comment_player
+                function toggle_slide(){
+                var div = document.getElementById("comment_player");
+                    if(status == 0){    //slide out player
+                        div.innerHTML="<div id=\"player_container\" style=\"left:33%;\"><input type=\"image\" id=\"slide_button\" src=\"Slide_Button2.jpg\" /><img id=\"comment_video\" src=\"comment1.jpg\"/><\div>";
+                        status=1;
+                    }
+                    else{   //collapse player
+                        div.innerHTML="<div id=\"player_container\" style=\"left:65%;\"><input type=\"image\" id=\"slide_button\" src=\"Slide_Button.jpg\" /><img id=\"comment_video\" src=\"comment1.jpg\"/><\div>";
+                    status= 0;
+                    }
+                    main();
+                }
+                
+                function main(){
+                var slide= document.getElementById("slide_button");
+                slide.addEventListener("click",toggle_slide, false);
+               // $("thumbnail".click(toggle_view);
+               }
+               
+               window.addEventListener("load", main,false);
+
+            </script>
+        </head>
+            <body>
+                        <div id="image_container">
+                            <img  class="image" src="VlogMe_logo_(small).jpg"/>
+                        </div>
+                        <div id="video_area">
+                            <div id="video_container">
+                                    <img id="main_video"  src="MainVideo-Linus_Torvalds_TED.JPG"/>
+                            </div>
+                            <div id="comments_panel">
+                                <h2>Comments</h2>
+                                <!--Comment 1!-->
+                                <img class="thumbnail" src="comment1.jpg"/>
+                                <h3>by user33 on 10/18/2016</h3>
+                                <h3><em>"This guy makes a lot of sense"</em></h3>
+                                <br><br>
+                                <!--Comment 2!-->
+                                <img class="thumbnail" src="comment2.jpg"/>
+                                <h3>by user55 on 10/18/2016</h3>
+                                <h3><em>"That's a good point there"</em></h3>
+                                <br><br>
+                                <!--Comment 3!-->
+                                <img class="thumbnail" src="comment1.jpg"/>
+                                    <h3>by user33 on 10/18/2016</h3>
+                                    <h3><em>"I made another comment down here"</em></h3>
+                                    <br><br>
+                                <!--Comment 4!-->
+                                <img class="thumbnail" src="comment2.jpg"/>
+                                <h3>by user55 on 10/18/2016</h3>
+                                <h3><em>"I commented again too"</em></h3>
+                            </div>
+                            <div id="comment_player">
+                                <div id="player_container" style="left:65%;">
+                                    <input type="image" id="slide_button" src="Slide_Button.jpg"/>
+                                    <img id="comment_video" src="comment1.jpg"/>
+                                    <h3 id="comment_description">by user33 on 10/18/2016</h3>
+                                    <h3><em>"This guy makes a lot of sense"</em></h3>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="bottom_controls">
+                            <div id="upload_controls"><input id="comment_button" type="button" value="Upload Comment"/>
+                            </div>
+                            <div id="description">
+                            <h2>Main Video</h2>
+                            <p>Main video description goes on here, so blah, blah, blah</p>
+                            </div>
+                        </div>
+            </body>
+</html>
