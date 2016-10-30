@@ -1,0 +1,95 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/app-layout/app-grid/app-grid-style.html">
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../../bower_components/paper-styles/color.html">
+<link rel="import" href="../vlogme-player/vlogme-player.html">
+<link rel="import" href="../vlogme-response-list/vlogme-response-list.html">
+
+<style is="custom-style">
+  :root {
+    --vlogme-color-dark: #2f006d;
+    --vlogme-color-main: #7d48ff;
+    --vlogme-color-alt: #63d;
+    --vlogme-color-background: var(--paper-grey-80);
+  }
+
+  body {
+    background-color: var(--vlogme-color-alt);
+    padding: 0;
+  }
+</style>
+
+<dom-module id="vlogme-app">
+
+  <template>
+
+    <style include="app-grid-style">
+
+      :host {
+        display: block;
+        --app-grid-columns: 3;
+        --app-grid-gutter: 4px;
+        --app-grid-item-height: 514px;
+        --app-grid-expandible-item-columns: 2;
+      }
+
+      paper-toolbar {
+        background-color: var(--vlogme-color-dark);
+      }
+
+      paper-toolbar h1.title {
+        display: inline;
+        padding: 10px 0;
+      }
+
+      .item:first-child {
+        @apply(--app-grid-expandible-item);
+      }
+
+      @media (max-width: 799px) {
+        :host {
+          --app-grid-columns: 1;
+          --app-grid-expandible-item-columns: 1;
+        }
+      }
+
+    </style>
+
+    <paper-toolbar>
+      <h1 main-title class="title">[[site_title]]</h1>
+    </paper-toolbar>
+
+    <div class="app-grid">
+      <vlogme-player class="item"></vlogme-player>
+      <vlogme-response-list class="item"></vlogme-response-list>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'vlogme-app',
+      ready: function() {
+        // XXX: in order to actually honor the media query
+        // this closure must be called on resize
+        this.update_grid_styles = function() {
+          this.updateStyles();
+        }.bind(this);
+      },
+			attached: function() {
+				window.addEventListener('resize', this.update_grid_styles);
+			},
+			detached: function() {
+				window.removeEventListener('resize', this.update_grid_styles);
+			},
+      properties: {
+        site_title: {
+          type: String,
+          value: 'vlogme'
+        }
+      }
+    });
+  </script>
+
+</dom-module>

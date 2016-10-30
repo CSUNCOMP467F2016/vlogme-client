@@ -1,0 +1,50 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../bower_components/paper-header-panel/paper-header-panel.html">
+
+<dom-module id="vlogme-response-item">
+
+  <template>
+
+    <style>
+
+      :host {
+        display: block;
+        padding: 10px;
+      }
+
+      #video-container {
+        background-color: blue;
+        width: 800px;
+        height: 450px;
+      }
+
+      #responses-container {
+        background-color: white;
+        width: 300px;
+        height: 450px;
+      }
+
+    </style>
+
+    [[title]]
+
+  </template>
+
+  <script>
+    Polymer({
+
+      is: 'vlogme-response-item',
+
+      properties: {
+        title: {
+          type: String,
+          value: 'Response Title'
+        }
+      }
+
+    });
+  </script>
+
+</dom-module>
+

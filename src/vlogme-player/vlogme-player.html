@@ -1,0 +1,76 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
+<link rel="import" href="../../bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../../bower_components/paper-toolbar/paper-toolbar.html">
+
+<style include="iron-flex iron-flex-alignment"></style>
+<style>
+  @import url("/bower_components/video.js/dist/video-js.min.css");
+</style>
+<script src="/bower_components/dash-js/dist/dash.all.min.js"></script>
+<script src="/bower_components/video.js/dist/video.min.js"></script>
+<script src="/bower_components/dash-js/contrib/videojs/videojs-dash.min.js"></script>
+<!-- <script src="/bower_components/videojs-contrib-dash/dist/videojs-dash.min.js"></script> -->
+
+<dom-module id="vlogme-player">
+
+  <template>
+
+    <style>
+
+      :host {
+        display: block;
+        background-color: black;
+      }
+
+      paper-toolbar {
+        --paper-toolbar-background: var(--vlogme-color-alt);
+      }
+
+      #video-wrapper {
+        max-height: 450px;
+        min-width: 250px;
+      }
+
+    </style>
+
+    <paper-header-panel mode="seamed">
+
+      <paper-toolbar id="header">
+        <div>[[video_title]]</div>
+      </paper-toolbar>
+
+      <div id="video-wrapper">
+        <video id="video"
+          class="video-js vjs-default-skin vjs-fluid"
+          src="{{video_uri}}"
+          controls ></video>
+      </div>
+
+    </paper-header-panel>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'vlogme-player',
+      attached: function() {
+        var player = this.player = videojs(video);
+      },
+      ready: function() {
+        var video = this.$.video;
+      },
+      properties: {
+        video_title: {
+          type: String,
+          value: 'Einst\u00fcrzende Neubauten - Nagorny Karabach'
+        },
+        video_uri: {
+          type: String,
+          value: '/video.mp4'
+        }
+      }
+    });
+  </script>
+
+</dom-module>
