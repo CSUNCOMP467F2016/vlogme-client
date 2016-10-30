@@ -56,7 +56,7 @@ h3{
     height:100%;
     width:70%;
     background-color:black;
-    padding-left:5%;
+    padding-left:1%;
 }
 
 #main_video{    
@@ -85,7 +85,9 @@ h3{
     background-color: #7d48ff;
     opacity:0.90;
     height:100%;
-    width:67%;
+    max-width:100%;
+    text-align:right;
+    color:white;
 }
 
 #slide_button{
@@ -98,8 +100,9 @@ h3{
 
 #comment_video{ /*settings for the response video player */
     height:40%;
-    padding-left:15%;
-    padding-top:15%;
+    padding-left:5%;
+    padding-right:5%;
+    padding-top:10%;
 }
 
 .thumbnail{
@@ -120,7 +123,7 @@ h3{
     width:90%;
     display:block;
     /*margin:auto;*/
-    padding-left:10%;
+    padding-left:5%;
     padding-top:2%;
 }
 
@@ -131,6 +134,6 @@ h3{
 
 #upload_controls{
     float:right;
-    margin-right:27%;
+    margin-right:25%;
     background-color:#7d48ff;
 }

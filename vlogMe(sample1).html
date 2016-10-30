@@ -2,6 +2,7 @@
 <!-- Mikael A Mendoza/COMP467/CSUN Fall 2016-->
 <html>
         <head>
+            <meta charset="utf-8"/>
             <link rel="StyleSheet" type = "text/css" href = "vlogMe(sample1).css" media = " all" />
             <title>VlogMe (sample)</title>
             <script type="text/javascript">
@@ -9,23 +10,62 @@
                 var status=0;   //boolean, collapsed=0 slide-out=1
                 
                 //This function toggles the slider comment_player
-                function toggle_slide(){
-                var div = document.getElementById("comment_player");
+                function toggle_slide(current_comment){
+                    var div = document.getElementById("comment_player");
+                    var main_video = document.getElementById("main_video");
+                    
+                    if(current_comment > 0){    //if a comment is clicked, select it to play
+                        var comment_playing = "comment"+ current_comment + ".mp4";    
+                        }
+                    else{   //no comment to play at this time
+                    }
+                    
                     if(status == 0){    //slide out player
-                        div.innerHTML="<div id=\"player_container\" style=\"left:33%;\"><input type=\"image\" id=\"slide_button\" src=\"Slide_Button2.jpg\" /><img id=\"comment_video\" src=\"comment1.jpg\"/><\div>";
+                        
+                        if(current_comment == 0){
+                        comment_playing = "comment0.jpg";    //if no comments at current time
+                        div.innerHTML="<div id=\"player_container\" style=\"right:30%;\">"+
+                            "<input type=\"image\" id=\"slide_button\" src=\"Slide_Button2.jpg\"/>"+
+                            "<h2 style=\"padding:5%\">No Comments at current time<h2>"+
+                            "</div>";
+                        }
+                        else{   //choose correct comment
+                            main_video.pause(); //pause the main video before playing comment
+                            var comment_playing = "comment"+ current_comment + ".mp4";
+                            div.innerHTML="<div id=\"player_container\" style=\"right:30%;\">"+
+                            "<input type=\"image\" id=\"slide_button\" src=\"Slide_Button2.jpg\"/>"+
+                            "<video type=\"video/mp4\" id=\"comment_video\" controls autoplay\>" +
+                                "<source src=\"" + comment_playing + "\"/><br>"+
+                            "<\div>";
+                        }
                         status=1;
                     }
+                    
                     else{   //collapse player
-                        div.innerHTML="<div id=\"player_container\" style=\"left:65%;\"><input type=\"image\" id=\"slide_button\" src=\"Slide_Button.jpg\" /><img id=\"comment_video\" src=\"comment1.jpg\"/><\div>";
-                    status= 0;
+                        if(current_comment > 0){
+                            var playing_comment= document.getElementById("comment_video");
+                            if(playing_comment !== null)
+                                playing_comment.pause(); //stop comment if playing
+                        }
+                        else{};
+                        div.innerHTML="<div id=\"player_container\" style=\"right:30%\">"+
+                        "<input type=\"image\" id=\"slide_button\" src=\"Slide_Button.jpg\"/>"+
+                        "<\div>";
+                        main_video.play();
+                        status= 0;
                     }
-                    main();
+                        //return to main method
+                        main();
                 }
                 
                 function main(){
                 var slide= document.getElementById("slide_button");
-                slide.addEventListener("click",toggle_slide, false);
-               // $("thumbnail".click(toggle_view);
+                var comment1= document.getElementById("comment1");
+                var comment2= document.getElementById("comment2");
+
+                slide.addEventListener("click",function(){toggle_slide(0);}, false);
+                comment1.addEventListener("click",function(){toggle_slide(1);}, false);
+                comment2.addEventListener("click",function(){toggle_slide(2);}, false);
                }
                
                window.addEventListener("load", main,false);
@@ -38,36 +78,27 @@
                         </div>
                         <div id="video_area">
                             <div id="video_container">
-                                    <img id="main_video"  src="MainVideo-Linus_Torvalds_TED.JPG"/>
+                                <video id="main_video" controls autoplay/>
+                                    <source src="main_video.mp4" type="video/mp4">
+                                </video>
                             </div>
                             <div id="comments_panel">
                                 <h2>Comments</h2>
                                 <!--Comment 1!-->
-                                <img class="thumbnail" src="comment1.jpg"/>
+                                <input type="image" id="comment1" class="thumbnail" src="comment1.jpg"/>
                                 <h3>by user33 on 10/18/2016</h3>
-                                <h3><em>"This guy makes a lot of sense"</em></h3>
+                                <h3><em>"The most famous scene in the film"</em></h3>
                                 <br><br>
                                 <!--Comment 2!-->
-                                <img class="thumbnail" src="comment2.jpg"/>
+                                <input type="image" id="comment2" class="thumbnail" src="comment2.jpg"/>
                                 <h3>by user55 on 10/18/2016</h3>
-                                <h3><em>"That's a good point there"</em></h3>
+                                <h3><em>"Here's that pixies song"</em></h3>
                                 <br><br>
-                                <!--Comment 3!-->
-                                <img class="thumbnail" src="comment1.jpg"/>
-                                    <h3>by user33 on 10/18/2016</h3>
-                                    <h3><em>"I made another comment down here"</em></h3>
-                                    <br><br>
-                                <!--Comment 4!-->
-                                <img class="thumbnail" src="comment2.jpg"/>
-                                <h3>by user55 on 10/18/2016</h3>
-                                <h3><em>"I commented again too"</em></h3>
                             </div>
                             <div id="comment_player">
-                                <div id="player_container" style="left:65%;">
+                                <div id="player_container" style="right:30%">
                                     <input type="image" id="slide_button" src="Slide_Button.jpg"/>
-                                    <img id="comment_video" src="comment1.jpg"/>
-                                    <h3 id="comment_description">by user33 on 10/18/2016</h3>
-                                    <h3><em>"This guy makes a lot of sense"</em></h3>
+                                    
                                 </div>
                             </div>
                         </div>
@@ -75,8 +106,9 @@
                             <div id="upload_controls"><input id="comment_button" type="button" value="Upload Comment"/>
                             </div>
                             <div id="description">
-                            <h2>Main Video</h2>
-                            <p>Main video description goes on here, so blah, blah, blah</p>
+                            <h2>Un Chien Andalou (clip)</h2>
+                            <p>A short clip of the first couple of minutes of "Un Chien Andalou",
+                            a surrealist film by Salvador Dali and Luis Buñuel</p>
                             </div>
                         </div>
             </body>
