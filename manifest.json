@@ -1,0 +1,6 @@
+{
+  "name": "vlogme",
+  "short_name": "vlogme",
+  "start_url": "/",
+  "display": "standalone"
+}

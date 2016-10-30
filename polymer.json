@@ -1,0 +1,16 @@
+{
+  "entrypoint": "index.html",
+  "shell": "src/vlogme-app/vlogme-app.html",
+  "fragments": [
+    "src/vlogme-player/vlogme-player.html",
+    "src/vlogme-response-item/vlogme-response-item.html",
+    "src/vlogme-response-list/vlogme-response-list.html"
+  ],
+  "includeDependencies": [
+    "bower_components/webcomponentsjs/webcomponents-lite.min.js",
+    "bower_components/dash-js/dist/dash.all.min.js",
+    "bower_components/dash-js/contrib/videojs/videojs-dash.min.js",
+    "bower_components/video.js/dist/video.min.js",
+    "bower_components/video.js/dist/video-js.min.css"
+  ]
+}
