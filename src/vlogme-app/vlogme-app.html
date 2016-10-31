@@ -22,16 +22,17 @@
 
       :host {
         display: block;
+        @apply(--layout-fit);
+        @apply(--layout-vertical);
       }
 
       #player-container {
         @apply(--layout-horizontal);
-        @apply(--layout-fit);
+        @apply(--layout-flex);
       }
 
       vlogme-player {
         @apply(--layout-flex-5);
-        @apply(--layout-self-stretch);
       }
 
       vlogme-response-list {
@@ -40,6 +41,7 @@
       }
 
       paper-toolbar {
+        @apply(--layout-flex-none);
         background-color: var(--vlogme-color-dark);
       }
 
