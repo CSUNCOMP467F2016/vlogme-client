@@ -7,16 +7,11 @@
 <link rel="import" href="../vlogme-response-list/vlogme-response-list.html">
 
 <style is="custom-style">
-  :root {
-    --vlogme-color-dark: #2f006d;
-    --vlogme-color-main: #7d48ff;
-    --vlogme-color-alt: #63d;
-    --vlogme-color-background: var(--paper-grey-80);
-  }
-
   body {
-    background-color: var(--vlogme-color-alt);
+    @apply(--layout-fullbleed);
+    @apply(--layout-vertical);
     padding: 0;
+    background-color: var(--vlogme-color-background);
   }
 </style>
 
