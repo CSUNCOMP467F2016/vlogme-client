@@ -48,11 +48,14 @@
   <script>
     Polymer({
       is: 'vlogme-player',
+      ready: function() {
+        var video = this.video = this.$$('#video-element');
+      },
       attached: function() {
         var player = this.player = videojs(this.video);
       },
-      ready: function() {
-        var video = this.video = this.$$('#video-element');
+      detached: function() {
+        this.player.dispose();
       },
       properties: {
         video_title: {
