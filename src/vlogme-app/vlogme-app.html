@@ -1,7 +1,6 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-<link rel="import" href="../../bower_components/app-layout/app-grid/app-grid-style.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
-<link rel="import" href="../../bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
 <link rel="import" href="../vlogme-player/vlogme-player.html">
 <link rel="import" href="../vlogme-response-list/vlogme-response-list.html">
@@ -19,14 +18,25 @@
 
   <template>
 
-    <style include="app-grid-style">
+    <style>
 
       :host {
         display: block;
-        --app-grid-columns: 3;
-        --app-grid-gutter: 4px;
-        --app-grid-item-height: 514px;
-        --app-grid-expandible-item-columns: 2;
+      }
+
+      #player-container {
+        @apply(--layout-horizontal);
+        min-height: 600px;
+      }
+
+      vlogme-player {
+        @apply(--layout-flex-5);
+        @apply(--layout-self-stretch);
+      }
+
+      vlogme-response-list {
+        @apply(--layout-flex);
+        @apply(--layout-self-stretch);
       }
 
       paper-toolbar {
@@ -38,15 +48,20 @@
         padding: 10px 0;
       }
 
-      .item:first-child {
-        @apply(--app-grid-expandible-item);
-      }
-
       @media (max-width: 799px) {
-        :host {
-          --app-grid-columns: 1;
-          --app-grid-expandible-item-columns: 1;
+
+        #player-container {
+          @apply(--layout-vertical);
         }
+
+        vlogme-player {
+          @apply(--layout-wrap);
+        }
+
+        vlogme-response-list {
+          @apply(--layout-wrap);
+        }
+
       }
 
     </style>
@@ -55,9 +70,9 @@
       <h1 main-title class="title">[[site_title]]</h1>
     </paper-toolbar>
 
-    <div class="app-grid">
-      <vlogme-player class="item"></vlogme-player>
-      <vlogme-response-list class="item"></vlogme-response-list>
+    <div id="player-container">
+      <vlogme-player></vlogme-player>
+      <vlogme-response-list></vlogme-response-list>
     </div>
 
   </template>
@@ -65,19 +80,6 @@
   <script>
     Polymer({
       is: 'vlogme-app',
-      ready: function() {
-        // XXX: in order to actually honor the media query
-        // this closure must be called on resize
-        this.update_grid_styles = function() {
-          this.updateStyles();
-        }.bind(this);
-      },
-			attached: function() {
-				window.addEventListener('resize', this.update_grid_styles);
-			},
-			detached: function() {
-				window.removeEventListener('resize', this.update_grid_styles);
-			},
       properties: {
         site_title: {
           type: String,
