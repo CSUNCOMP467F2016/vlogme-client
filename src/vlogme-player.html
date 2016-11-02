@@ -59,6 +59,7 @@
       is: 'vlogme-player',
       ready: function() {
         var video = this.video = this.$$('#video-element');
+        this.scopeSubtree(video, true);
       },
       attached: function() {
         var player = this.player = videojs(this.video);
