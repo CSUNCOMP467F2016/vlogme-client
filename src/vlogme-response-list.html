@@ -3,6 +3,7 @@
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/iron-icons/av-icons.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-item/paper-icon-item.html">
 <link rel="import" href="../bower_components/paper-item/paper-item-body.html">
 <link rel="import" href="../bower_components/paper-item/paper-item.html">
@@ -54,6 +55,8 @@
       </template>
     </paper-listbox>
 
+    <paper-button on-click="loadMoreData">Load More&hellip;</paper-button>
+
   </template>
 
   <script>
@@ -71,6 +74,17 @@
       },
       detached: function() {
         this.list.removeEventListener('iron-select', this.select_cb);
+      },
+      loadMoreData: function() {
+        var item = {
+          title: 'First Response',
+          duration: '2:34'
+        };
+        function f() {
+          for (var i = 0; i < 2; i++)
+            this.push('responses', item);
+        }
+        setTimeout(f.bind(this), 500);
       },
       properties: {
         video_title: {
