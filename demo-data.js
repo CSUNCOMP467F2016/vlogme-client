@@ -13,7 +13,7 @@ window.DEMO_DATA = [
     "title": "Why Django Sucks PyCon SE 2015",
     "responses": [
       {
-        "position": 22.3,
+        "position": 300,
         "id": "e81ba8f4-3dbf-4444-bcb8-a3825dc5a829",
         "title": "You have 20 seconds to comply Robocop"
       }
