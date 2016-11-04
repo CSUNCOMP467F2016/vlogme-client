@@ -13,10 +13,6 @@ function main() {
     };
   }
 
-  function player_init(){
-    console.log("loading item %s", JSON.stringify(topic_src));
-  }
-
   function init(){
 
     var topic = window.DEMO_DATA[2];
@@ -24,14 +20,63 @@ function main() {
 
     var responses = topic.responses;
 
-    responses.forEach(
-     (item) => { console.log("response@%d: %s", item.position, item.title); }
-    );
+    var response = responses[0];
+    var response_src = item_src(response);
 
     console.log('initializing');
-    var player = videojs('video', player_init);
-    player.src([topic_src]).load();
-    player.play();
+    var player = videojs('video');
+    player.autoplay(true);
+    var play_closure = player.play.bind(player);
+
+    var timeupdate_ctx = { };
+
+    function timeupdate_disable() {
+      timeupdate_ctx.position = undefined;
+      timeupdate_ctx.then = undefined;
+    }
+
+    function timeupdate_enable(position, then) {
+      timeupdate_ctx.position = position;
+      timeupdate_ctx.then = then;
+    }
+
+    function timeupdate(then) {
+      var now = player.currentTime();
+      var position = timeupdate_ctx.position;
+      var then = timeupdate_ctx.then;
+      if (then !== undefined && position !== undefined && now >= position) {
+        console.log('timeupdate: working');
+        then();
+      }
+    }
+
+    function resume(uri, timestamp){
+      function resume_at() {
+        console.log('ready');
+        player.currentTime(timestamp);
+        player.play();
+      }
+      player.src([uri]).load().ready(resume_at);
+    }
+
+    function schedule_response() {
+      var now = response.position - 1;
+      timeupdate_disable();
+      console.log('swapping out content');
+      player.pause();
+      function resume_later() {
+        console.log('resuming old content');
+        resume(topic_src, now);
+      }
+      player.on('ended', resume_later);
+      player.src([response_src]);
+    }
+
+    timeupdate_enable(response.position, schedule_response);
+
+    player.on('timeupdate', timeupdate);
+
+    player.src([topic_src]).load().ready(play_closure);
 
   }
 
