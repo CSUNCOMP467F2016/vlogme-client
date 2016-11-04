@@ -5,14 +5,17 @@
             <meta charset="utf-8"/>
             <link rel="StyleSheet" type = "text/css" href = "poc1.css" media = " all" />
             <title>VlogMe (Proof of Concept)</title>
+            <script src='//cameratag.com/api/v9/js/cameratag.min.js' type='text/javascript'></script>
+            <link rel='stylesheet' href='//cameratag.com/static/9/cameratag.css'>
+            
+            <!--Main Script!-->
             <script type="text/javascript">
-
                 var main_video; //reference to the Main video
                 var panel;  //comments panel
                 var response_point = 45; /*(in seconds) variable for a point in the main video containing comment responses. Eventually can be made an array of response points*/
                                         
                 var refresh_interval = 5000;    //(in milliseconds) interval to check current time on Main video
-                var accuracy = 15;   //(in seconds) range within response point for a comment to be on the panel
+                var accuracy = 20;   //(in seconds) range within response point for a comment to be on the panel
 
                 
                 //This function slides the comment_player out when a comment is clicked, plays it and slides back in
@@ -105,37 +108,48 @@
                }
                
                window.addEventListener("load", init,false);
-
             </script>
+            <!-- End of Script !-->
         </head>
-            <body>
-                        <div id="image_container">
-                            <img  class="image" src="vlogMe_logo.JPG"/>
-                        </div>
-                        <div id="video_area">
-                            <div id="video_container">
-                                <video id="main_video" controls="true" autoplay/>
-                                    <source src="main_video.mp4" type="video/mp4">
-                                </video>
-                            </div>
-                            <div id="comments_panel">
-                                <h2>Comments</h2>
-                                <br><h3>User comments will appear here<h3>
-                            </div>
-                            <div id="comment_player">
-                                <div id="player_container" style="right:30%">
-                                </div>
-                            </div>
-                        </div>
-                        <div id="bottom_controls">
-                            <div id="upload_controls">
-                            <a href="http://54.214.85.69"><input id="comment_button" type="button" value="Upload Comment"/></a>
-                            </div>
-                            <div id="description">
-                            <h2>Un Chien Andalou (clip)</h2>
-                            <p>A short clip of the first couple of minutes of "Un Chien Andalou",
+        
+        <body>
+            <!-- Top bar !-->
+            <div id="image_container">
+                <img  class="image" src="vlogMe_logo.JPG"/>
+            </div>
+            <!-- !-->
+            
+            <!--Video Area (contains Main Video, Comments Panel and Comments Player !-->
+            <div id="video_area">
+                <div id="video_container">
+                    <video id="main_video" controls="true" autoplay/>
+                        <source src="main_video.mp4" type="video/mp4">
+                    </video>
+                </div>
+                <div id="comments_panel">
+                    <h2>Comments</h2>
+                    <br><h3>User comments will appear here<h3>
+                </div>
+                <div id="comment_player">
+                    <div id="player_container" style="right:30%"></div>
+                </div>
+            </div>
+            <!-- !-->
+            
+            <!--Bottom Controls !-->
+            <div id="bottom_controls">
+                <div id="upload_controls">
+                    <a href="http://54.214.85.69"><input id="comment_button" type="button" value="Upload Comment"/></a>
+                <!--<camera data-app-id='a-d156e1d0-812e-0134-c89c-1217e1551dfd' id='myCamera'>
+                </camera>!-->
+                </div>
+                <div id="description">
+                    <h2>Un Chien Andalou (clip)</h2>
+                    <p>A short clip of the first couple of minutes of "Un Chien Andalou",
                             a surrealist film by Salvador Dali and Luis Buñuel</p>
-                            </div>
-                        </div>
-            </body>
+                </div>
+            </div>
+            <!-- !-->
+            
+    </body>
 </html>
