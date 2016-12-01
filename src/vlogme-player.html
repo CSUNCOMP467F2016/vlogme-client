@@ -1,4 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 
@@ -42,6 +44,13 @@
       }
 
     </style>
+
+    <app-location route="{{route}}"></app-location>
+    <app-route
+      route="{{route}}"
+      pattern="/watch/:video"
+      data="{{player_route_data}}">
+    </app-route>
 
     <paper-toolbar>
       <div>[[video_title]]</div>
