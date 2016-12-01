@@ -1,0 +1,89 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+
+<style>
+  @import url("/bower_components/video.js/dist/video-js.min.css");
+</style>
+<script src="../bower_components/dash-js/dist/dash.all.min.js"></script>
+<script src="../bower_components/video.js/dist/video.min.js"></script>
+<script src="../bower_components/dash-js/contrib/videojs/videojs-dash.min.js"></script>
+<!-- <script src="/bower_components/videojs-contrib-dash/dist/videojs-dash.min.js"></script> -->
+
+<dom-module id="vlogme-player">
+
+  <template>
+
+    <style>
+
+      :host {
+        display: block;
+        @apply(--layout-vertical);
+      }
+
+      paper-toolbar {
+        --paper-toolbar-background: var(--vlogme-color-alt, gray);
+        font-family:  trebuchet, sans-serif;
+        font-size: x-large;
+        font-weight: bold;
+      }
+
+      #video-element {
+        @apply(--layout-flex);
+        @apply(--layout-self-stretch);
+        @apply(--layout-center-center);
+      }
+
+      .vjs-fluid {
+        padding: 0;
+      }
+
+      @media(max-width: 699px) {
+        :host {
+          min-height: 320px;
+        }
+      }
+
+    </style>
+
+    <paper-toolbar>
+      <div>[[video_title]]</div>
+    </paper-toolbar>
+
+    <video id="video-element"
+      class="video-js vjs-default-skin vjs-fluid"
+      src="{{video_uri}}" controls>
+    </video>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'vlogme-player',
+      ready: function() {
+        var video = this.video = this.$$('#video-element');
+        this.scopeSubtree(video, true);
+      },
+      attached: function() {
+        var player = this.player = videojs(this.video);
+        player.play();
+        //Here add the check to fetch comments if player.currentime() is near a response_point
+        //
+      },
+      detached: function() {
+        this.player.dispose();
+      },
+      properties: {
+        video_title: {
+          type: String,
+          value: 'Un Chien Andalou (clip)'
+        },
+        video_uri: {
+          type: String,
+          value: '/video.mp4'
+        }
+      }
+    });
+  </script>
+
+</dom-module>

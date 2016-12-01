@@ -1,0 +1,8 @@
+{
+  "manifest_version":2,
+  "name": "vlogme",
+  "version":"1.0",
+  "short_name": "vlogme",
+  "start_url": "/",
+  "display": "standalone"
+}

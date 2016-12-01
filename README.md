@@ -1,29 +1,38 @@
-## vlogme-client
+# \<vlogme-polymer\>
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://opensource.org/licenses/MIT)
 
-## Installation
 
-```bash
-$ npm install -g typescript
-$ npm start
+## Install the Polymer-CLI
+
+First, make sure you have the [Polymer CLI](https://www.npmjs.com/package/polymer-cli) installed. Then run `polymer serve` to serve your application locally.
+
+## Viewing Your Application
+
+```
+$ polymer serve
 ```
 
-## Production Build
-```bash
-$ npm run build
+## Building Your Application
+
+```
+$ polymer build
 ```
 
-## Running Unit Tests
-```bash
-$ npm test
+This will create a `build/` folder with `bundled/` and `unbundled/` sub-folders
+containing a bundled (Vulcanized) and unbundled builds, both run through HTML,
+CSS, and JS optimizers.
+
+You can serve the built versions by giving `polymer serve` a folder to serve
+from:
+
+```
+$ polymer serve build/bundled
 ```
 
-## Running End-to-End Tests
-```bash
-# make sure you have a running app
-$ npm run e2e
+## Running Tests
+
+```
+$ polymer test
 ```
 
-## License
-<a href="https://opensource.org/licenses/MIT">MIT License</a>
+Your application is already set up to be tested via [web-component-tester](https://github.com/Polymer/web-component-tester). Run `polymer test` to run your application's test suite locally.

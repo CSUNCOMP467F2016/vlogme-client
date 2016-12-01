@@ -1,0 +1,82 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/paper-styles/color.html">
+<link rel="import" href="vlogme-player.html">
+<link rel="import" href="vlogme-response-list.html">
+
+<dom-module id="vlogme-app">
+
+  <template>
+
+    <style>
+
+      :host {
+        display: block;
+        @apply(--layout-fit);
+        @apply(--layout-vertical);
+      }
+
+      #player-container {
+        @apply(--layout-horizontal);
+        @apply(--layout-flex);
+      }
+
+      vlogme-player {
+        @apply(--layout-flex-5);
+      }
+
+      vlogme-response-list {
+        @apply(--layout-flex);
+        @apply(--layout-self-stretch);
+      }
+
+      paper-toolbar {
+        @apply(--layout-flex-none);
+        background-color: var(--vlogme-color-dark, black);
+      }
+
+
+      @media (max-width: 699px) {
+
+        #player-container {
+          @apply(--layout-vertical);
+        }
+
+        vlogme-player {
+          @apply(--layout-wrap);
+        }
+
+        vlogme-response-list {
+          @apply(--layout-wrap);
+          @apply(--layout-flex-none);
+        }
+
+      }
+
+    </style>
+
+    <paper-toolbar >
+      <img style="height:90%; width:auto;" src="vlogMe_logo.JPG"></img>
+    </paper-toolbar>
+
+    <div id="player-container">
+      <vlogme-player></vlogme-player>
+      <vlogme-response-list></vlogme-response-list>
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'vlogme-app',
+      properties: {
+        site_title: {
+          type: String,
+          value: 'vlogme'
+        }
+      }
+    });
+  </script>
+
+</dom-module>
