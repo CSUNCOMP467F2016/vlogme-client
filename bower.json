@@ -8,7 +8,8 @@
     "paper-elements": "PolymerElements/paper-elements#^1.0.7",
     "video.js": "^5.12.6",
     "videojs-contrib-dash": "^2.5.1",
-    "dash-js": "^2.3.0"
+    "dash-js": "^2.3.0",
+    "lodash-element": "^1.0.2"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",
