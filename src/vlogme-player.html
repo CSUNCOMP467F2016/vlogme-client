@@ -66,6 +66,10 @@
   <script>
     Polymer({
       is: 'vlogme-player',
+      observers: [
+        '_route_changed(route.*)',
+        '_view_changed(player_route_data.video)'
+      ],
       ready: function() {
         var video = this.video = this.$$('#video-element');
         this.scopeSubtree(video, true);
@@ -75,6 +79,12 @@
       },
       detached: function() {
         this.player.dispose();
+      },
+      _route_changed: function(r) {
+        console.log('route changed to ', r);
+      },
+      _view_changed: function(view) {
+        console.log('view changed to ', view);
       },
       properties: {
         video_title: {
