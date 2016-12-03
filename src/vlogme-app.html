@@ -18,9 +18,29 @@
         @apply(--layout-vertical);
       }
 
-      #player-container {
+      paper-toolbar {
+        @apply(--layout-flex-none);
+        background-color: var(--vlogme-color-dark, black);
+      }
+
+      paper-toolbar h1.title {
+        display: inline;
+        padding: 10px 0;
+      }
+
+      iron-pages {
+        @apply(--layout-relative);
+        height: 100%;
+      }
+
+      iron-pages>.page-item {
+        background-color: red;
         @apply(--layout-horizontal);
-        @apply(--layout-flex);
+        @apply(--layout-fit);
+      }
+
+      vlogme-landing-page {
+        @apply(--layout-flex-12);
       }
 
       vlogme-player {
@@ -32,19 +52,9 @@
         @apply(--layout-self-stretch);
       }
 
-      paper-toolbar {
-        @apply(--layout-flex-none);
-        background-color: var(--vlogme-color-dark, black);
-      }
-
-      paper-toolbar h1.title {
-        display: inline;
-        padding: 10px 0;
-      }
-
       @media (max-width: 699px) {
 
-        #player-container {
+        .page-item {
           @apply(--layout-vertical);
         }
 
