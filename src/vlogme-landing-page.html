@@ -88,6 +88,21 @@
   <script>
     Polymer({
       is: 'vlogme-landing-page',
+      attached: function() {
+
+        // XXX: grids don't currently recalculate with media query breakpoints
+        // see <https://github.com/PolymerElements/app-layout/blob/master/app-grid/demo/simple-responsive-grid.html#L103>
+        this._update_grid_styles = this._update_grid_styles || function() {
+          console.log('resizing');
+          this.updateStyles();
+        }.bind(this);
+
+        window.addEventListener('resize', this._update_grid_styles);
+
+      },
+      detached: function() {
+        window.removeEventListener('resize', this._update_grid_styles);
+      },
       properties: {
         topics: {
           type: Array
