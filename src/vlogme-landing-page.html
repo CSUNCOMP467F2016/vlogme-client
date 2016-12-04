@@ -13,7 +13,7 @@
       :host {
         @apply(--layout-vertical);
         @apply(--layout-self-stretch);
-        --app-grid-columns: 3;
+        --app-grid-columns: 4;
         --app-grid-gutter: 4px;
         --app-grid-item-height: 200px;
 
@@ -41,6 +41,7 @@
       @media(max-width: 699px) {
         :host {
           min-height: 320px;
+          --app-grid-columns: 1;
         }
       }
 
