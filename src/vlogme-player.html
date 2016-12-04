@@ -1,6 +1,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="vlogme-response-list.html">
 
 <style>
   @import url("/bower_components/video.js/dist/video-js.min.css");
@@ -65,23 +66,64 @@
         this.scopeSubtree(video, true);
       },
       attached: function() {
+        var refresh_interval = 5000; //Interval at which player checks for Responses in ms
         var player = this.player = videojs(this.video);
-        player.play();
-        //Here add the check to fetch comments if player.currentime() is near a response_point
-        //
+        if(!player.paused() || !player.ended())
+          player.play();
+        console.log("Player is Attached");
+        
+        //Check  for Responses at refresh_interval
+        setInterval(this.refresh_comments.bind(this), refresh_interval);
       },
       detached: function() {
+        this.cancelAsync;
         this.player.dispose();
       },
+      
       properties: {
-        video_title: {
+        video_title: {  //here make a call to get the title for the Topic video
           type: String,
           value: 'Un Chien Andalou (clip)'
         },
         video_uri: {
           type: String,
           value: '/video.mp4'
+        },
+        //RESPONSE_POINTS lists points in Topic Video at which Comments occur
+        //variable in seconds
+        response_points:{
+          type: Array,
+          value: [
+            42,
+            72
+            ]
         }
+      },
+      
+      refresh_comments: function(){
+        var accuracy = 15; //range within which to display responses (in seconds)
+        var video_topic = this.player;
+        var current_time = parseInt(video_topic.currentTime());
+        
+        console.log("In refresh_comments function-- at "+ current_time + " secs");
+        
+        if(!video_topic.paused() && !video_topic.ended()){  //not paused and not ended
+          this.response_points.forEach(function(element){
+            console.log("Checking Response Point at " + parseInt(element) + " secs");
+            console.log("Check yielded: "+ parseInt(element - current_time));
+            if((element - current_time) < accuracy && (current_time - element) > 0){
+              console.log("There are responses at "+ current_time + " secs");
+              //The nearest Response Point has been found, refresh 'response-list'
+              //break from fromEach() loop
+            }
+            else
+              console.log("No comments at "+ current_time + " secs");
+          });
+        }
+        else
+          console.log("Video is paused or has ended");
+        
+        console.log("Exiting refresh_comments");
       }
     });
   </script>
