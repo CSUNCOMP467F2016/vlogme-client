@@ -48,19 +48,39 @@
     </style>
 
     <paper-toolbar>
-      <div>Latest Videos</div>
+      <div>Latest Topics</div>
     </paper-toolbar>
 
     <div class="app-grid">
-      <paper-card image="/placeholder.png">
-        <div class="card-content">
-          <div><a href="#">Video Title</a></div>
-          <div><a href="#">Author</a></div>
-          <div>
-            <span>[[v]] Views</span> | <span>[[r]] Responses</span>
+      <template is="dom-repeat" items="{{topics}}">
+        <paper-card image="/placeholder.png">
+          <div class="card-content">
+            <div><a href="#">Video Title</a></div>
+            <div><a href="#">Author</a></div>
+            <div>
+              <span>[[v]] Views</span> | <span>[[r]] Responses</span>
+            </div>
           </div>
-        </div>
-      </paper-card>
+        </paper-card>
+      </template>
+    </div>
+
+    <paper-toolbar>
+      <div>Latest Responses</div>
+    </paper-toolbar>
+
+    <div class="app-grid">
+      <template is="dom-repeat" items="{{responses}}">
+        <paper-card image="/placeholder.png">
+          <div class="card-content">
+            <div><a href="#">Video Title</a></div>
+            <div><a href="#">Author</a></div>
+            <div>
+              <span>[[v]] Views</span> | <span>[[r]] Responses</span>
+            </div>
+          </div>
+        </paper-card>
+      </template>
     </div>
 
   </template>
