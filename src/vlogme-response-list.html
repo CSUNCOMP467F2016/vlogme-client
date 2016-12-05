@@ -57,15 +57,15 @@
           <paper-icon-item tabindex="-1" role="none">
             <iron-icon icon="av:play-circle-filled" item-icon></iron-icon>
             <paper-item-body two-line>
-              <div>[[item.title]]</div>
-              <div secondary>[[item.duration]]</div>
+              <div>{{item.title}}</div>
+              <div secondary>{{item.duration}}</div>
             </paper-item-body>
           </paper-icon-item>
         </template>
       </paper-listbox>
     </iron-scroll-threshold>
 
-    <paper-button on-click="loadMoreData">Load More&hellip;</paper-button>
+    <!--<paper-button on-click="loadMoreData">Load More&hellip;</paper-button>-->
 
   </template>
 
@@ -85,11 +85,15 @@
       detached: function() {
         this.list.removeEventListener('iron-select', this.select_cb);
       },
+      /*
       loadMoreData: function() {
         var scroll = this.$.scroll;
         var item = {
-          title: 'First Response',
-          duration: '2:34'
+          
+          //title: 'First Response',
+          //duration: '2:34',
+         // uri: ''
+          //iron-ajax call here for extra responses
         };
         function f() {
           scroll.clearTriggers();
@@ -97,25 +101,38 @@
             this.push('responses', item);
         }
         setTimeout(f.bind(this), 500);
-      },
+      },*/
       properties: {
         video_title: {
           type: String,
           value: 'Some Video'
         },
         responses: {
-          type: Array,
-          value: [
+          type: Array ,
+          value:[/*  
             {
               title: 'First Response',
-              duration: '2:34'
+              duration: '2:34',
+              uri: 'http:vlogmeserver/id'
             },
             {
               title: 'Second Response',
-              duration: '22:45'
-            }
-          ]
+              duration: '2:34',
+              uri: 'http:vlogmeserver/id2'
+            } */
+          ] 
         }
+      },
+      
+      set_responses: function(title, duration, uri){  //add a Response to the Responses Panel
+        console.log('In set_responses inside response-list');
+        var index = this.responses.bind(this).length;
+        this.responses.push('{ title: \''+title+'\', duration: \''+duration+ '\', uri: \''+uri+'\'}');
+        console.log('Response[' + index + '] = ' + this.responses[index].toString());
+      },
+      
+      clear_responses: function(){
+        responses = [];
       }
     });
   </script>
