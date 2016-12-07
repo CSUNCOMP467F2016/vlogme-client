@@ -78,9 +78,6 @@
       <vlogme-response-list></vlogme-response-list>
     </div>
     
-    <!--Testing -->
-    <paper-toolbar id= "bottom_bar"><p>Description Here -> {{description}} <-</p></paper-toolbar>
-
   </template>
 
   <script>
@@ -89,9 +86,11 @@
       
       ready: function(){
         var refresh_interval = 5000; //5 secs interval time
+        var current_responses = this.$$('vlogme-response-list').get_panel();
         this.description = this.$$('vlogme-player').video_title;
         console.log("Title: " + this.$$('vlogme-player').video_title);
         
+        current_responses.addEventListener('iron-select',this.play_response.bind(this));
         //Test
         setInterval(this.refresh_responses.bind(this), refresh_interval);
         //
@@ -100,10 +99,6 @@
         site_title: {
           type: String,
           value: 'vlogme'
-        }
-        , 
-        description:{
-          type:String
         },
         //RESPONSE_POINTS is an ordered-list of all points in Topic Video at which Comments occur
         //Each Array member variables are in seconds
@@ -114,12 +109,6 @@
             42
             ]
         }
-      },
-      
-      current_time: function(){ //Logs the current video's playtime  (in secs)
-          var video = this.$$('vlogme-player').get_player();
-          var play_time = parseInt(video.currentTime());
-          console.log("Current play time: "+ play_time);
       },
       
       refresh_responses: function(){
@@ -140,9 +129,10 @@
               //The nearest Response Point has been found, refresh 'response-list'
               response_panel.responses = []; //clear Response panel
               
-              response_panel.responses[0]= JSON.stringify("{\'title\':\'Response1\', \'duration\':\'18 secs\', \'uri\':\'/comment1.mp4\'}");
-              console.log("Response 1: "+ response_panel.responses[0]);
-              response_panel.responses[1]= JSON.stringify("{\'title\':\'Response2\', \'duration\':\'18 secs\', \'uri\':\'/comment2.mp4\'}");
+             
+              response_panel.push('responses',JSON.parse("{\"title\":\"Response1\",\"duration\":\"18 secs\", \"uri\":\"/comment1.mp4\"}"));
+              console.log("Response 1: "+ JSON.stringify(response_panel.responses[0].title));
+              response_panel.push('responses',JSON.parse("{\"title\":\"Response2\",\"duration\":\"18 secs\", \"uri\":\"/comment2.mp4\"}"));
               //Request all Responses at 
             
               point_found = true; //a Point was found, ignore any others
@@ -164,6 +154,13 @@
         }
         
         console.log("Exiting refresh_comments");
+      },
+      
+      play_response: function(e){
+        console.log('In play_response. Received parameter= '+ e.detail.);
+        var video_topic = this.$$('vlogme-player').get_player();
+        
+        video_topic.pause();
       }
 
     });

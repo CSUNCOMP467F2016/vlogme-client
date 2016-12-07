@@ -14,6 +14,7 @@
 <link rel="import" href="../bower_components/paper-styles/typography.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="vlogme-player.html">
+<link rel="import" href="vlogme-app.html">
 
 <dom-module id="vlogme-response-list">
 
@@ -51,7 +52,7 @@
       <div>Responses</div>
     </paper-toolbar>
 
-    <iron-scroll-threshold id="scroll" on-lower-threshold="loadMoreData">
+    <iron-scroll-threshold id="scroll" > <!--on-lower-threshold="loadMoreData">-->
       <paper-listbox id="responses-listbox" tabindex="-1">
         <template is="dom-repeat" items="[[responses]]" as="item">
           <paper-icon-item tabindex="-1" role="none">
@@ -73,17 +74,17 @@
     Polymer({
       is: 'vlogme-response-list',
       ready: function() {
-        var list = this.list = this.$['responses-listbox'];
+        /* var list = this.list = this.$['responses-listbox'];
         this.select_cb = function(e) {
           // TODO: react to selection
           return true;
-        }.bind(this);
+        }.bind(this);*/
       },
       attached: function() {
-        this.list.addEventListener('iron-select', this.select_cb);
+        //this.list.addEventListener('iron-select', this.select_cb);
       },
       detached: function() {
-        this.list.removeEventListener('iron-select', this.select_cb);
+        //this.list.removeEventListener('iron-select', this.select_cb);
       },
       /*
       loadMoreData: function() {
@@ -133,6 +134,10 @@
       
       clear_responses: function(){
         responses = [];
+      },
+      
+      get_panel: function(){
+        return this.$['responses-listbox'];
       }
     });
   </script>
