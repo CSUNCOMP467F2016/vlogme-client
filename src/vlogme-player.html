@@ -58,7 +58,7 @@
 
     <video id="video-element"
       class="video-js vjs-default-skin vjs-fluid"
-      src="{{video_uri}}" controls>
+      src="{{video_uri}}" controls autoplay>
     </video>
 
   </template>
@@ -75,6 +75,7 @@
         this.scopeSubtree(video, true);
       },
       attached: function() {
+        var refresh_interval = 5000; //Interval at which player checks for Responses in ms
         var player = this.player = videojs(this.video);
       },
       detached: function() {
@@ -95,6 +96,10 @@
           type: String,
           value: '/video.mp4'
         }
+      },
+      
+      get_player: function(){ //returns a reference to the Player
+        return this.player;
       }
     });
   </script>
