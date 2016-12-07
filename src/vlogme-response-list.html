@@ -51,7 +51,7 @@
       <div>Responses</div>
     </paper-toolbar>
 
-    <iron-scroll-threshold id="scroll" on-lower-threshold="loadMoreData">
+    <iron-scroll-threshold id="scroll">
       <paper-listbox id="responses-listbox" tabindex="-1">
         <template is="dom-repeat" items="[[responses]]" as="item">
           <paper-icon-item tabindex="-1" role="none" data-item="[[item]]">
@@ -65,45 +65,12 @@
       </paper-listbox>
     </iron-scroll-threshold>
 
-    <paper-button on-click="loadMoreData">Load More&hellip;</paper-button>
-
   </template>
 
   <script>
     Polymer({
       is: 'vlogme-response-list',
-      select_event_to_item: function(ev) {
-        return ev.detail.item.dataItem;
-      },
-      navigate_to: function(item) {
-        this.set('route.path', '/watch/' + item.id);
-      },
       ready: function() {
-        var list = this.list = this.$['responses-listbox'];
-        this.select_cb = this.select_cb || function(e) {
-          var item = this.select_event_to_item(e);
-          this.navigate_to(item);
-          return true;
-        }.bind(this);
-      },
-      attached: function() {
-        this.list.addEventListener('iron-select', this.select_cb);
-      },
-      detached: function() {
-        this.list.removeEventListener('iron-select', this.select_cb);
-      },
-      loadMoreData: function() {
-        var scroll = this.$.scroll;
-        var item = {
-          title: 'First Response',
-          duration: '2:34'
-        };
-        function f() {
-          scroll.clearTriggers();
-          for (var i = 0; i < 2; i++)
-            this.push('responses', item);
-        }
-        setTimeout(f.bind(this), 500);
       },
       properties: {
         video_title: {
@@ -111,20 +78,12 @@
           value: 'Some Video'
         },
         responses: {
-          type: Array,
-          value: [
-            {
-              id: '8122cc49-9724-4429-bf73-91ec972b20f0',
-              title: 'First Response',
-              duration: '2:34'
-            },
-            {
-              id: '48e6fcba-1ebc-4536-8491-b69585d94428',
-              title: 'Second Response',
-              duration: '22:45'
-            }
-          ]
+          type: Array ,
+          value:[]
         }
+      },
+      get_panel: function(){
+        return this.$['responses-listbox'];
       }
     });
   </script>
