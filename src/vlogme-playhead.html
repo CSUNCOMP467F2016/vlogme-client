@@ -1,0 +1,37 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<dom-module id="vlogme-playhead">
+
+  <template>
+
+    <style>
+
+      :host {
+        display: block;
+        @apply(--layout-vertical);
+      }
+
+    </style>
+
+    <div>
+      The video has [[responses]] response(s).
+    </div>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'vlogme-playhead',
+      ready: function() {
+      },
+      properties: {
+        responses: {
+          type: Number,
+          value: 0
+        }
+      }
+    });
+  </script>
+
+</dom-module>
