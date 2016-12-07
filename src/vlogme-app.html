@@ -74,8 +74,8 @@
 
     <app-location route="{{route}}"></app-location>
 
-    <paper-toolbar>
-      <h1 main-title class="title">[[site_title]]</h1>
+    <paper-toolbar >
+      <img style="height:90%; width:auto;" src="vlogMe_logo.JPG"></img>
     </paper-toolbar>
 
     <iron-pages id="pages" selected="0">
@@ -90,12 +90,86 @@
   <script>
     Polymer({
       is: 'vlogme-app',
+      
+      ready: function(){
+        var refresh_interval = 5000; //5 secs interval time
+        var current_responses = this.$$('vlogme-response-list').get_panel();
+        this.description = this.$$('vlogme-player').video_title;
+        console.log("Title: " + this.$$('vlogme-player').video_title);
+        
+        current_responses.addEventListener('iron-select',this.play_response.bind(this));
+        //Test
+        setInterval(this.refresh_responses.bind(this), refresh_interval);
+        //
+      },
       properties: {
         site_title: {
           type: String,
           value: 'vlogme'
+        },
+        //RESPONSE_POINTS is an ordered-list of all points in Topic Video at which Comments occur
+        //Each Array member variables are in seconds
+        response_points:{
+          type: Array,
+          value: [
+            12,
+            42
+            ]
         }
+      },
+      
+      refresh_responses: function(){
+        var accuracy = 15; //range within which to display responses (in seconds)
+        var video_topic = this.$$('vlogme-player').get_player();
+        var response_panel = this.$$('vlogme-response-list');
+        var play_time = parseInt(video_topic.currentTime());
+        var point_found = false;
+        console.log("In refresh_comments function-- at "+ play_time + " secs");
+        
+        if(!video_topic.paused() && !video_topic.ended()){  //not paused and not ended
+          this.response_points.forEach(function(point){
+            console.log("Checking Response Point at " + point + " secs");
+            console.log("Check yielded: "+ (point - play_time).toString());
+            //check if video is currently near a Response Point & no other Response Points have been found
+            if(!point_found && (point - play_time) < accuracy && (point - play_time) > 0){
+              console.log("There are responses at "+ play_time + " secs");
+              //The nearest Response Point has been found, refresh 'response-list'
+              response_panel.responses = []; //clear Response panel
+              
+             
+              response_panel.push('responses',JSON.parse("{\"title\":\"Response1\",\"duration\":\"18 secs\", \"uri\":\"/comment1.mp4\"}"));
+              console.log("Response 1: "+ JSON.stringify(response_panel.responses[0].title));
+              response_panel.push('responses',JSON.parse("{\"title\":\"Response2\",\"duration\":\"18 secs\", \"uri\":\"/comment2.mp4\"}"));
+              //Request all Responses at 
+            
+              point_found = true; //a Point was found, ignore any others
+            }
+            else if(point_found){ //a Response Point has been found already
+              console.log("A closer Response Point has been found");
+            }
+            else
+              console.log("Response point at "+ point + " secs is not within range");
+          });
+        }
+        else if(!point_found){
+          response_panel.responses =[]; 
+          console.log("No Responses within range");
+        }
+        else{
+          console.log("Video Topic is not playing");
+          //response_panel.responses = [];
+        }
+        
+        console.log("Exiting refresh_comments");
+      },
+      
+      play_response: function(e){
+       // console.log('In play_response. Received parameter= '+ e.detail.);
+        var video_topic = this.$$('vlogme-player').get_player();
+        
+        video_topic.pause();
       }
+
     });
   </script>
 
