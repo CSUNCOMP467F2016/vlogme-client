@@ -96,18 +96,16 @@
   <script>
     Polymer({
       is: 'vlogme-app',
-      
+
       ready: function(){
         var refresh_interval = 5000; //5 secs interval time
         var current_responses = this.$$('vlogme-response-list').get_panel();
         this.description = this.$$('vlogme-player').video_title;
         console.log("Title: " + this.$$('vlogme-player').video_title);
-        
-        
         //Fetch response-points from Server & copy into response_points
         this.$.ajax.generateRequest();
         //
-        
+
         current_responses.addEventListener('iron-select',this.play_response.bind(this));
         //Test
         setInterval(this.refresh_responses.bind(this), refresh_interval);
@@ -128,7 +126,7 @@
             ]
         }
       },
-      
+
       refresh_responses: function(){
         var accuracy = 15; //range within which to display responses (in seconds)
         var video_topic = this.$$('vlogme-player').get_player();
@@ -136,7 +134,7 @@
         var play_time = parseInt(video_topic.currentTime());
         var point_found = false;
         console.log("In refresh_comments function-- at "+ play_time + " secs");
-        
+
         if(!video_topic.paused() && !video_topic.ended()){  //not paused and not ended
           this.response_points.forEach(function(point){
             console.log("Checking Response Point at " + point + " secs");
@@ -146,13 +144,13 @@
               console.log("There are responses at "+ play_time + " secs");
               //The nearest Response Point has been found, refresh 'response-list'
               response_panel.responses = []; //clear Response panel
-              
-             
+
+
               response_panel.push('responses',JSON.parse("{\"title\":\"Response1\",\"duration\":\"18 secs\", \"uri\":\"/comment1.mp4\"}"));
               console.log("Response 1: "+ JSON.stringify(response_panel.responses[0].title));
               response_panel.push('responses',JSON.parse("{\"title\":\"Response2\",\"duration\":\"18 secs\", \"uri\":\"/comment2.mp4\"}"));
-              //Request all Responses at 
-            
+              //Request all Responses at
+
               point_found = true; //a Point was found, ignore any others
             }
             else if(point_found){ //a Response Point has been found already
@@ -163,21 +161,21 @@
           });
         }
         else if(!point_found){
-          response_panel.responses =[]; 
+          response_panel.responses =[];
           console.log("No Responses within range");
         }
         else{
           console.log("Video Topic is not playing");
           //response_panel.responses = [];
         }
-        
+
         console.log("Exiting refresh_comments");
       },
-      
+
       play_response: function(e){
        // console.log('In play_response. Received parameter= '+ e.detail.);
         var video_topic = this.$$('vlogme-player').get_player();
-        
+
         video_topic.pause();
       },
       
