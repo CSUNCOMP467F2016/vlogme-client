@@ -77,12 +77,12 @@
     <app-location route="{{route}}"></app-location>
     <iron-ajax id="points_ajax"
       url="http://ec2-35-164-213-202.us-west-2.compute.amazonaws.com/endpoint/response-points/1"
-      method="POST"
+      method="GET"
       on-response= "fetch_response_points"></iron-ajax>
       
     <iron-ajax id="responses_ajax"
       url="http://ec2-35-164-213-202.us-west-2.compute.amazonaws.com/endpoint/video/1/[[current_point]]"
-      method="POST"
+      method="GET"
       on-response= "fetch_responses"></iron-ajax>
 
     <paper-toolbar>
