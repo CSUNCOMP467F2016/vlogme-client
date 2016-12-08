@@ -35,6 +35,7 @@
       iron-pages {
         @apply(--layout-relative);
         height: 100%;
+        width: 100%;
       }
 
       iron-pages>.page-item {
@@ -183,28 +184,28 @@
         var wait_for_response_end = function(){
           //reset URI to Video_Topic
         vlogme_player.set('video_uri', video_topic);
-        
+
         console.log('current_time = ', current_time);
         //resume Video Topic
         response_selected.title = response_title; //reset Response title
         video_player.play();
         video_player.currentTime(current_time);
         };
-        
+
         response_selected.title = 'PLAYING NOW';  //mark Response as 'Playing Now'
         //Pause Video Topic
         video_player.pause();
-        
+
         //change video URI on videojs player
         vlogme_player.set('video_uri',response_selected.uri);
-        
+
         //play Response video
         video_player.play();
-        
+
         //Listen for end of Response video
         video_player.on('ended', wait_for_response_end);
       },
-      
+
       //this event handles the Response from the AJAX request to fetch the response_points
       fetch_response_points: function(e, detail){
         console.log('--IN FETCH_RESPONSE_POINTS--');

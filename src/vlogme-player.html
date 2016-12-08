@@ -9,6 +9,7 @@
   @import url("/bower_components/video.js/dist/video-js.min.css");
   @import url("/bower_components/videojs-marker/dist/videojs.markers.min.css");
 </style>
+<script src="../bower_components/jquery/dist/jquery.js"></script>
 <script src="../bower_components/dash-js/dist/dash.all.min.js"></script>
 <script src="../bower_components/video.js/dist/video.min.js"></script>
 <script src="../bower_components/dash-js/contrib/videojs/videojs-dash.min.js"></script>
@@ -44,6 +45,11 @@
       .video-js{
         font-size: 10px;
         color: #fff;
+      }
+      video{
+        border: 2px solid black;
+        height: 267px;
+        width: 640px;
       }
       .video-js .vjs-control-bar {
         display: -webkit-box;
@@ -103,9 +109,9 @@
 
     <video id="video-element"
       class="video-js vjs-default-skin vjs-fluid"
-      src="{{video_uri}}" controls autoplay preload="auto" width="700px" height="300px"
+      src="{{video_uri}}" controls autoplay preload="auto" width="640px" height="267px"
     data-setup="{
-      'aspectRatio':'700:300',
+      'aspectRatio':'640:267',
       'playbackRates':[1, 1.5, 2]
     }">
     </video>
@@ -121,7 +127,7 @@
       ],
       ready: function() {
         var video = this.video = this.$$('#video-element');
-        $$('#scroll').hide();
+        //this.$$('#scroll').hide();
         this.scopeSubtree(video, true);
       },
       attached: function() {
@@ -161,10 +167,10 @@
           },
           onMarkerReached: function (marker) {
                 player.pause();
-                $$('#scroll').show("fast");
+                $('#scroll').show("fast");
           },
           markers: [{
-            time: 9.5,
+            time: 30,
             text: "marker",
             overlayText: 'overlay',
             class: 'custom-marker'
