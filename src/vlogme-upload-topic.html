@@ -42,11 +42,20 @@
       <div>Upload New Video</div>
     </paper-toolbar>
 
-    <div id="upload-form-container">
-      <form is="iron-form">
-        <paper-input label="Title" name="title"></paper-input>
-        <paper-input label="Video File" type="file" name="file"></paper-input>
-        <paper-button raised onclick="">Upload</paper-button>
+    <p>Enter a title and select a video file to upload.</p>
+
+    <div>
+      <form id="upload-topic-form" is="iron-form">
+        <paper-input label="Title"
+                     name="title"
+                     required>
+        </paper-input>
+        <paper-input label="Video File"
+                     type="file"
+                     name="file"
+                     required>
+        </paper-input>
+        <paper-button raised on-click="_submit">Upload</paper-button>
       </form>
     </div>
 
@@ -54,7 +63,11 @@
 
   <script>
     Polymer({
-      is: 'vlogme-upload-topic'
+      is: 'vlogme-upload-topic',
+      _submit: function(ev) {
+        var form = this.$['upload-topic-form'];
+        console.log('submit form', form);
+      }
     });
   </script>
 
