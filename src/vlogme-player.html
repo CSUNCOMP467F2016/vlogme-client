@@ -1,9 +1,19 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="vlogme-playhead.html">
 
 <style>
   @import url("/bower_components/video.js/dist/video-js.min.css");
+</style>
+<style is="custom-style">
+  .video-js .vjs-time-tooltip,
+.video-js .vjs-mouse-display:after,
+.video-js .vjs-play-progress:after{
+  	visibility: visible;
+  display:block;
+  }
 </style>
 <script src="../bower_components/dash-js/dist/dash.all.min.js"></script>
 <script src="../bower_components/video.js/dist/video.min.js"></script>
@@ -20,9 +30,17 @@
         display: block;
         @apply(--layout-vertical);
       }
+      
+      :root {
+      --vjs-play-progress-content: "abcdef";
+      }
 
       paper-toolbar {
         --paper-toolbar-background: var(--vlogme-color-alt, gray);
+      }
+      
+      vlogme-playhead{
+      	@apply(--layout-flex);
       }
 
       #video-element {
@@ -51,6 +69,7 @@
       class="video-js vjs-default-skin vjs-fluid"
       src="{{video_uri}}" controls>
     </video>
+	<vlogme-playhead response_count="[[response_count]]"></vlogme-playhead>
 
   </template>
 
@@ -59,10 +78,30 @@
       is: 'vlogme-player',
       ready: function() {
         var video = this.video = this.$$('#video-element');
+        var playhead = this.playhead = this.$$('vlogme-playhead');
         this.scopeSubtree(video, true);
+
       },
       attached: function() {
-        var player = this.player = videojs(this.video);
+        var player = this.player = videojs(this.video, {"inactivityTimeout":0});
+        var me = this;
+        var body = document.querySelector('body');
+        		
+        var ss = document.styleSheets[0];
+        ss.insertRule(".nothing {}", 0);
+        
+        player.on('timeupdate', function() {
+
+    	   var t = player.currentTime();
+		   me.set('playhead.position', t);
+		   
+		   var data = "Position: " + t + ", responses: " + me.response_count;
+		   var css = '.video-js .vjs-play-progress:after { content: "' + data + '" !important; } '
+		   
+    	   ss.deleteRule(0);
+		   ss.insertRule(css, 0);	
+           
+        })
       },
       detached: function() {
         this.player.dispose();
@@ -75,6 +114,10 @@
         video_uri: {
           type: String,
           value: '/video.mp4'
+        },
+        response_count: {
+          type: Number,
+          value: 8
         }
       }
     });

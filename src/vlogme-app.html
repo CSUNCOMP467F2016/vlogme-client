@@ -1,4 +1,6 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/paper-styles/color.html">
@@ -30,6 +32,7 @@
         @apply(--layout-flex);
         @apply(--layout-self-stretch);
       }
+   
 
       paper-toolbar {
         @apply(--layout-flex-none);
@@ -60,12 +63,19 @@
 
     </style>
 
+    <app-location route="{{route}}"></app-location>
+    <app-route route="{{route}}" pattern="/:page" tail="{{subroute}}"></app-route>
+    <app-route route="{{subroute}}" pattern="/:id" data="{{subrouteData}}"></app-route>
+
     <paper-toolbar>
       <h1 main-title class="title">[[site_title]]</h1>
     </paper-toolbar>
 
     <div id="player-container">
-      <vlogme-player></vlogme-player>
+      <vlogme-player route="videoRoute"
+      				 response_count="[[current_video.responses.length]]">
+      </vlogme-player>
+
       <vlogme-response-list></vlogme-response-list>
     </div>
 
@@ -74,10 +84,38 @@
   <script>
     Polymer({
       is: 'vlogme-app',
+      ready: function() {
+        var response_list = this.$$('vlogme-response-list');
+        response_list.set('video_id', this.current_video.id);
+        response_list.set('responses', this.current_video.responses);
+        
+      },
       properties: {
         site_title: {
           type: String,
           value: 'vlogme'
+        },
+        current_video: {
+          type: Object,
+          value: {
+            'id': 111,
+            'title': 'abc',
+            'duration': 35.4,
+            'responses': [
+              {
+                'title': 'r1',
+                'duration': 44.3,
+                'thumbnail': 'https://www.polymer-project.org/images/logos/p-logo.png',
+                'id': 1
+              },
+              {
+                'title': 'r2',
+                'duration': 4433.3,
+                'thumbnail': 'https://www.polymer-project.org/images/1.0/first-element/sample-toggles.png',
+                'id': 2
+              }
+            ]
+          }
         }
       }
     });

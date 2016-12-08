@@ -1,0 +1,38 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="vlogme-playhead">
+
+  <template>
+
+    <style>
+      :host {
+        display: block;
+        @apply(--layout-vertical);
+      }
+    </style>
+
+   [[position]], {{response_count}} responses
+
+
+
+  </template>
+  
+      <script>
+      Polymer({
+        is: 'vlogme-playhead',
+        ready: function() {
+        },
+        properties: {
+          position: { 
+            type: Number,
+            value:50
+          },
+          response_count: { 
+            type: Number,
+            value: 25
+          }
+        }
+      });
+    </script>
+
+</dom-module> 

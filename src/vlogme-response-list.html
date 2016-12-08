@@ -49,15 +49,18 @@
     </paper-toolbar>
 
     <iron-scroll-threshold id="scroll" on-lower-threshold="loadMoreData">
-      <paper-listbox id="responses-listbox" tabindex="-1">
+      <paper-listbox id="responses-listbox" tabindex="-1" iron-select="">
         <template is="dom-repeat" items="[[responses]]" as="item">
+          <a href="/video/{{video_id}}/response/{{item.id}}">
           <paper-icon-item tabindex="-1" role="none">
             <iron-icon icon="av:play-circle-filled" item-icon></iron-icon>
+            <img src="{{item.thumbnail}}" width="32" height="32" />
             <paper-item-body two-line>
               <div>[[item.title]]</div>
               <div secondary>[[item.duration]]</div>
             </paper-item-body>
           </paper-icon-item>
+        </a>
         </template>
       </paper-listbox>
     </iron-scroll-threshold>
@@ -72,7 +75,11 @@
       ready: function() {
         var list = this.list = this.$['responses-listbox'];
         this.select_cb = function(e) {
-          // TODO: react to selection
+          console.log(e.detail);
+          var index = list.selected;
+          var item = this.responses[index];
+          console.log("selected item ", item);
+          window.history.pushState({}, null, "#response/" + item.id);
           return true;
         }.bind(this);
       },
@@ -83,6 +90,7 @@
         this.list.removeEventListener('iron-select', this.select_cb);
       },
       loadMoreData: function() {
+        return;
         var scroll = this.$.scroll;
         var item = {
           title: 'First Response',
@@ -99,6 +107,10 @@
         video_title: {
           type: String,
           value: 'Some Video'
+        },
+        video_id: {
+          type: Number,
+          value: 1
         },
         responses: {
           type: Array,
