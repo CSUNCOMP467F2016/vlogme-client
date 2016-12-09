@@ -45,17 +45,22 @@
     <p>Enter a title and select a video file to upload.</p>
 
     <div>
-      <form id="upload-topic-form" is="iron-form">
+      <form id="upload-topic-form"
+            is="iron-form"
+            method="post"
+            action="[[video_upload_endpoint]]"
+            enctype="multipart/form-data">
         <paper-input label="Title"
-                     name="title"
+                     name="video_title"
                      required>
         </paper-input>
         <paper-input label="Video File"
                      type="file"
-                     name="file"
+                     name="docfile"
                      required>
         </paper-input>
-        <paper-button raised on-click="_submit">Upload</paper-button>
+        <paper-button id="upload-button"
+          raised on-click="_submit">Upload</paper-button>
       </form>
     </div>
 
@@ -64,9 +69,47 @@
   <script>
     Polymer({
       is: 'vlogme-upload-topic',
-      _submit: function(ev) {
+      ready: function() {
         var form = this.$['upload-topic-form'];
-        console.log('submit form', form);
+        form.addEventListener(
+          'iron-form-presubmit',
+          this._presubmit.bind(this)
+        );
+      },
+      _presubmit: function(ev) {
+
+        ev.preventDefault();
+
+        var form = this.$['upload-topic-form'];
+        var button = this.$['upload-button'];
+
+        button.disabled = true;
+        form.disabled = true;
+
+        var data = new FormData(form);
+        var xhr = new XMLHttpRequest();
+        var url = form.action;
+
+        xhr.onload = function() {
+          button.disabled = false;
+        };
+        xhr.onerror = function() {
+          button.disabled = false;
+        };
+
+        xhr.open('POST', url, true);
+
+        xhr.send(data);
+
+      },
+      _submit: function() {
+        var form = this.$['upload-topic-form'];
+        form.submit();
+      },
+      properties: {
+        video_upload_endpoint: {
+          type: String
+        }
       }
     });
   </script>
