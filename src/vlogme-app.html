@@ -302,6 +302,7 @@
         var vlogme_player = this.$$('vlogme-player');
         this.$.points_ajax.generateRequest();
         vlogme_player.set('video_uri', e.detail.response.filename);
+        vlogme_player.set('video_title', e.detail.response.title);
 
       },
       _video_id_changed: function(video_id) {
