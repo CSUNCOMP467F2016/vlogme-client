@@ -166,10 +166,10 @@
               this.current_point = point; //Refresh Response_point for responses_ajax
               
               //TEMP --The nearest Response Point has been found, refresh 'response-list'
-              response_panel.responses = []; //clear Response panel
-              response_panel.push('responses',JSON.parse("{\"title\":\"Response1\",\"duration\":\"18 secs\", \"uri\":\"/comment1.mp4\"}"));
-              console.log("Response 1: "+ JSON.stringify(response_panel.responses[0].title));
-              response_panel.push('responses',JSON.parse("{\"title\":\"Response2\",\"duration\":\"18 secs\", \"uri\":\"/comment2.mp4\"}"));
+              // response_panel.responses = []; //clear Response panel
+              // response_panel.push('responses',JSON.parse("{\"title\":\"Response1\",\"duration\":\"18 secs\", \"uri\":\"/comment1.mp4\"}"));
+              // console.log("Response 1: "+ JSON.stringify(response_panel.responses[0].title));
+              // response_panel.push('responses',JSON.parse("{\"title\":\"Response2\",\"duration\":\"18 secs\", \"uri\":\"/comment2.mp4\"}"));
               //
 
               point_found = true; //a Point was found, ignore any others
@@ -190,9 +190,10 @@
         }
         
         //Make response_ajax call if a valid current_point has been set
-        if(current_point !== null && current_point !== '')
+        if(current_point !== null && current_point !== ''){
           this.$.responses_ajax.generateRequest();
-
+          //parse responses & iterate through them to add to Response Panel
+        }
         console.log("Exiting refresh_comments");
       },
 
