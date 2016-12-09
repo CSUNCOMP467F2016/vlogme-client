@@ -67,8 +67,7 @@
     Polymer({
       is: 'vlogme-player',
       observers: [
-        '_route_changed(route.*)',
-        '_view_changed(player_route_data.video)'
+        '_video_uri_changed(video_uri)'
       ],
       ready: function() {
         var video = this.video = this.$$('#video-element');
@@ -81,11 +80,8 @@
       detached: function() {
         this.player.dispose();
       },
-      _route_changed: function(r) {
-        console.log('route changed to ', r);
-      },
-      _view_changed: function(view) {
-        console.log('view changed to ', view);
+      _video_uri_changed: function(uri) {
+        console.log('video uri changed to ' + uri);
       },
       properties: {
         video_title: {
@@ -97,7 +93,7 @@
           value: '/video.mp4'
         }
       },
-      
+
       get_player: function(){ //returns a reference to the Player
         return this.player;
       }

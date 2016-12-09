@@ -8,7 +8,7 @@
     <link rel="manifest" href="/manifest.json">
     <script src="/bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
     <link rel="import" href="/src/vlogme-app.html">
-    <link rel="import" href="bower_components/paper-styles/color.html">
+    <link rel="import" href="/bower_components/paper-styles/color.html">
     <style is="custom-style">
       :root {
         --vlogme-color-dark: var(--paper-deep-purple-900);
@@ -19,6 +19,10 @@
     </style>
   </head>
   <body>
-    <vlogme-app></vlogme-app>
+    <vlogme-app
+      video_upload_endpoint="http://ec2-35-164-213-202.us-west-2.compute.amazonaws.com/endpoint/upload-video"
+      latest_topics_endpoint="http://ec2-35-164-213-202.us-west-2.compute.amazonaws.com/endpoint/latest-topics"
+      latest_responses_endpoint="http://ec2-35-164-213-202.us-west-2.compute.amazonaws.com/endpoint/latest-responses">
+    </vlogme-app>
   </body>
 </html>

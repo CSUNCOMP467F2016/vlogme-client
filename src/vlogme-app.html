@@ -94,14 +94,20 @@
     <app-route route="{{route}}"
                pattern="/watch/:video_id"
                data="{{watch_route_data}}"></app-route>
+
+    <iron-ajax id="video_ajax"
+      url="http://ec2-35-164-213-202.us-west-2.compute.amazonaws.com/endpoint/video/[[watch_route_data.video_id]]"
+      method="GET"
+      on-response="fetch_video"></iron-ajax>
+
     <iron-ajax id="points_ajax"
-      url="http://ec2-35-164-213-202.us-west-2.compute.amazonaws.com/endpoint/response-points/1"
+      url="http://ec2-35-164-213-202.us-west-2.compute.amazonaws.com/endpoint/response-points/[[watch_route_data.video_id]]"
       method="GET"
       handle-as="JSON"
       on-response= "fetch_response_points"></iron-ajax>
 
     <iron-ajax id="responses_ajax"
-      url="http://ec2-35-164-213-202.us-west-2.compute.amazonaws.com/endpoint/video/1/[[current_point]]"
+      url="http://ec2-35-164-213-202.us-west-2.compute.amazonaws.com/endpoint/video/[[watch_route_data.video_id]]/[[current_point]]"
       method="GET"
       handle-as="JSON"
       on-response= "fetch_responses"></iron-ajax>
@@ -122,8 +128,11 @@
     </paper-toolbar>
 
     <iron-pages id="pages" selected="[[route_data.page]]" attr-for-selected="name">
-      <div name="landingpage" class="page-item">
-        <vlogme-landing-page></vlogme-landing-page>
+      <div name="" class="page-item">
+        <vlogme-landing-page
+          latest_responses_endpoint="[[latest_responses_endpoint]]"
+          latest_topics_endpoint="[[latest_topics_endpoint]]">
+        </vlogme-landing-page>
       </div>
       <div name="upload-topic" class="page-item">
         <vlogme-upload-topic
@@ -135,8 +144,10 @@
           video_upload_endpoint="[[video_upload_endpoint]]">
         </vlogme-upload-response>
       </div>
-      <div name="" route="{{subroute}}" class="page-item">
-        <vlogme-player></vlogme-player>
+      <div name="watch" route="{{subroute}}" class="page-item">
+        <vlogme-player video_title="[[video_title]]"
+                       video_id="[[watch_route_data.video_id]]">
+        </vlogme-player>
         <vlogme-response-list></vlogme-response-list>
       </div>
     </iron-pages>
@@ -146,14 +157,15 @@
   <script>
     Polymer({
       is: 'vlogme-app',
-
+      observers: [
+        '_video_id_changed(watch_route_data.video_id)'
+      ],
       ready: function(){
         var refresh_interval = 5000; //5 secs interval time
         var current_responses = this.$$('vlogme-response-list').get_panel();
         this.description = this.$$('vlogme-player').video_title;
         console.log("Title: " + this.$$('vlogme-player').video_title);
         //Fetch response-points from Server & copy into response_points
-        this.$.points_ajax.generateRequest();
         //
 
         current_responses.addEventListener('iron-activate',this.play_response.bind(this));
@@ -226,7 +238,6 @@
 
         //Make response_ajax call if a valid current_point has been set
         if(this.current_point !== null && this.current_point !== ''){
-          console.log('Making AJAX call to fetch responses at ' + current_point + ' secs');
           this.$.responses_ajax.generateRequest();
           //parse responses & iterate through them to add to Response Panel
         }
@@ -269,15 +280,10 @@
 
       //this function handles the Response from the AJAX request to fetch the response_points
       fetch_response_points: function(e, detail){
-        var response = JSON.parse(e.detail.response);
         console.log('--IN FETCH_RESPONSE_POINTS--');
-        console.log('AJAX response =', response);
-        console.log('response.length =', response.length);
-        //set Responses property as AJAX response
-        for(i=0; i < response.length; i++){
-          this.response_points.push(response[i]);
-        }
-        console.log('Response array', this.response_points.toString());
+        console.log('e.detail.response =', e.detail.response);
+        this.responses = e.detail.response; //set Responses property as AJAX response
+        console.log('Response array', this.responses);
       },
 
       //this function handles the Response from the AJAX request to fetch the responses at a specific point
@@ -285,17 +291,26 @@
         console.log('--IN FETCH_RESPONSES--');
         console.log('e.detail.response =', e.detail.response);
       },
-      
+      fetch_video: function(e, detail){
+        var response = e.detail.response;
+        console.log('video fetched', response);
+        var vlogme_player = this.$$('vlogme-player');
+        this.$.points_ajax.generateRequest();
+        vlogme_player.set('video_uri', e.detail.response.filename);
+
+      },
+      _video_id_changed: function(video_id) {
+        console.log('video_id: ', video_id);
+        this.$.video_ajax.generateRequest();
+      },
       _upload_topic: function() {
         this.set('route.path', '/upload-topic');
       },
-
       _upload_response: function() {
         var video_id = this.watch_route_data.video_id;
         this.set('route.path', '/upload-response/' + video_id);
       }
-
     });
   </script>
 
-</dom-mo       
+</dom-module>

@@ -1,4 +1,5 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-layout/app-grid/app-grid-style.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/iron-icon/iron-icon.html">
@@ -37,6 +38,8 @@
       }
 
     </style>
+
+    <app-location route="{{route}}"></app-location>
 
     <paper-toolbar>
       <div>Upload New Video</div>
@@ -80,6 +83,8 @@
 
         ev.preventDefault();
 
+        var me = this;
+
         var form = this.$['upload-topic-form'];
         var button = this.$['upload-button'];
 
@@ -92,6 +97,7 @@
 
         xhr.onload = function() {
           button.disabled = false;
+          me.set('route.path', '/');
         };
         xhr.onerror = function() {
           button.disabled = false;
