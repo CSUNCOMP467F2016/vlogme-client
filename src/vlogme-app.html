@@ -280,10 +280,15 @@
 
       //this function handles the Response from the AJAX request to fetch the response_points
       fetch_response_points: function(e, detail){
+        var response = JSON.parse(e.detail.response);
         console.log('--IN FETCH_RESPONSE_POINTS--');
-        console.log('e.detail.response =', e.detail.response);
-        this.responses = e.detail.response; //set Responses property as AJAX response
-        console.log('Response array', this.responses);
+        console.log('AJAX response =', response);
+        console.log('response.length =', response.length);
+        //set Responses property as AJAX response
+        for(i=0; i < response.length; i++){
+          this.response_points.push(response[i]);
+        }
+        console.log('Response array', this.response_points.toString());
       },
 
       //this function handles the Response from the AJAX request to fetch the responses at a specific point
