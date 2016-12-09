@@ -46,19 +46,30 @@
 
     </style>
 
+    <iron-ajax id="latest-topics"
+      url="[[latest_topics_endpoint]]"
+      method="GET"
+      handle="json"
+      auto
+      last-response="{{topics}}"></iron-ajax>
+
+    <iron-ajax id="latest-responses"
+      url="[[latest_responses_endpoint]]"
+      method="GET"
+      handle="json"
+      auto
+      last-response="{{responses}}"></iron-ajax>
+
     <paper-toolbar>
       <div>Latest Topics</div>
     </paper-toolbar>
 
     <div class="app-grid">
-      <template is="dom-repeat" items="{{topics}}">
-        <paper-card image="/placeholder.png">
+      <template is="dom-repeat" items="[[topics]]">
+        <paper-card image="[[item.thumbnail]]">
           <div class="card-content">
-            <div><a href="#">Video Title</a></div>
-            <div><a href="#">Author</a></div>
-            <div>
-              <span>[[v]] Views</span> | <span>[[r]] Responses</span>
-            </div>
+            <div><a href="/watch/[[item.id]]">[[item.title]]</a></div>
+            <div><a href="/watch/[[item.id]]">[[item.author]]</a></div>
           </div>
         </paper-card>
       </template>
@@ -69,14 +80,11 @@
     </paper-toolbar>
 
     <div class="app-grid">
-      <template is="dom-repeat" items="{{responses}}">
-        <paper-card image="/placeholder.png">
+      <template is="dom-repeat" items="[[responses]]">
+        <paper-card image="[[item.thumbnail]]">
           <div class="card-content">
-            <div><a href="#">Video Title</a></div>
-            <div><a href="#">Author</a></div>
-            <div>
-              <span>[[v]] Views</span> | <span>[[r]] Responses</span>
-            </div>
+            <div><a href="/watch/[[item.id]]">[[item.title]]</a></div>
+            <div><a href="/watch/[[item.id]]">[[item.author]]</a></div>
           </div>
         </paper-card>
       </template>
