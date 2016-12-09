@@ -4,11 +4,13 @@
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/paper-styles/color.html">
+<link rel="import" href="../bower_components/iron-icon/iron-icon.html">
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="vlogme-landing-page.html">
 <link rel="import" href="vlogme-player.html">
+<link rel="import" href="vlogme-upload-topic.html">
 <link rel="import" href="vlogme-response-list.html">
-
 
 <dom-module id="vlogme-app">
 
@@ -32,6 +34,11 @@
         padding: 10px 0;
       }
 
+      paper-button {
+        background: var(--paper-grey-50);
+        color: var(--vlogme-color-alt);
+      }
+
       iron-pages {
         @apply(--layout-relative);
         height: 100%;
@@ -43,6 +50,10 @@
       }
 
       vlogme-landing-page {
+        @apply(--layout-flex-12);
+      }
+
+      vlogme-upload-topic {
         @apply(--layout-flex-12);
       }
 
@@ -75,22 +86,54 @@
     </style>
 
     <app-location route="{{route}}"></app-location>
+    <app-route route="{{route}}"
+               pattern="/:page"
+               data="{{route_data}}"
+               tail="{{subroute}}"></app-route>
+
+    <app-route route="{{route}}"
+               pattern="/watch/:video_id"
+               data="{{watch_route_data}}"></app-route>
     <iron-ajax id="points_ajax"
       url="http://ec2-35-164-213-202.us-west-2.compute.amazonaws.com/endpoint/response-points/1"
       method="GET"
       on-response= "fetch_response_points"></iron-ajax>
-      
+
     <iron-ajax id="responses_ajax"
       url="http://ec2-35-164-213-202.us-west-2.compute.amazonaws.com/endpoint/video/1/[[current_point]]"
       method="GET"
       on-response= "fetch_responses"></iron-ajax>
 
     <paper-toolbar>
-      <img style="height:90%; width:auto;" src="vlogMe_logo.JPG"></img>
+      <a href="/" style="height: 90%">
+        <img style="height:100%; width:auto;" src="vlogMe_logo.JPG"></img>
+      </a>
+      <span class="title"></span>
+      <paper-button raised id="add-topic-button" on-click="_upload_topic">
+        <iron-icon raised icon="add"></iron-icon>
+        Add Topic
+      </paper-button>
+      <paper-button raised id="add-response-button" on-click="_upload_response">
+        <iron-icon raised icon="reply-all"></iron-icon>
+        Reply to Topic
+      </paper-button>
     </paper-toolbar>
 
-    <iron-pages id="pages" selected="0">
-      <div class="page-item">
+    <iron-pages id="pages" selected="[[route_data.page]]" attr-for-selected="name">
+      <div name="" class="page-item">
+        <vlogme-landing-page></vlogme-landing-page>
+      </div>
+      <div name="upload-topic" class="page-item">
+        <vlogme-upload-topic
+          video_upload_endpoint="[[video_upload_endpoint]]">
+        </vlogme-upload-topic>
+      </div>
+      <div name="upload-response" route="{{subroute}}" class="page-item">
+        <vlogme-upload-response
+          video_upload_endpoint="[[video_upload_endpoint]]">
+        </vlogme-upload-response>
+      </div>
+      <div name="watch" route="{{subroute}}" class="page-item">
         <vlogme-player></vlogme-player>
         <vlogme-response-list></vlogme-response-list>
       </div>
@@ -117,6 +160,9 @@
         //
       },
       properties: {
+        video_upload_endpoint: {
+          type: String,
+        },
         site_title: {
           type: String,
           value: 'vlogme'
@@ -132,7 +178,7 @@
             */
             ]
         },
-        
+
         current_point:{ //variable for nearest Response Point
           type: Number
         }
@@ -153,18 +199,18 @@
             point_check = point - play_time;
             console.log("Checking Response Point at " + point + " secs");
             console.log("Check yielded: "+ point_check.toString());
-            
+
             //check if current point is within range
             if((-accuracy) < point_check && point_check < accuracy )
               within_range = true;
-              
+
             //else not within range
-            
+
             //check if video is within range of 'point' & no closer 'point' has been found
             if(!point_found && within_range){
               console.log("There are responses at "+ point + " secs");
               this.current_point = point; //Refresh Response_point for responses_ajax
-              
+
               //TEMP --The nearest Response Point has been found, refresh 'response-list'
               // response_panel.responses = []; //clear Response panel
               // response_panel.push('responses',JSON.parse("{\"title\":\"Response1\",\"duration\":\"18 secs\", \"uri\":\"/comment1.mp4\"}"));
@@ -188,7 +234,7 @@
           response_panel.responses = [];
           this.current_point = '';
         }
-        
+
         //Make response_ajax call if a valid current_point has been set
         if(current_point !== null && current_point !== ''){
           this.$.responses_ajax.generateRequest();
@@ -204,45 +250,53 @@
         var vlogme_player = this.$$('vlogme-player');
         var video_player = this.$$('vlogme-player').get_player();
         var current_time = video_player.currentTime(); //records the time at which Video Topic was stopped
-        
+
         //This function is fired when the Response has finished playing
         var wait_for_response_end = function(){
           //reset URI to Video_Topic
           vlogme_player.set('video_uri', video_topic);
-        
+
           console.log('video_uri = ', vlogme_player.video_uri);
           //resume Video Topic
           //response_selected.title = response_title; //reset Response title
           video_player.currentTime(current_time);
           video_player.play();
         };
-        
+
         //response_selected.title = 'PLAYING NOW';  //mark Response as 'Playing Now'
         //Pause Video Topic
         video_player.pause();
-        
+
         //change video URI on videojs player
         vlogme_player.set('video_uri', response_selected.uri);
-        
+
         //play Response video
         video_player.play();
-        
+
         //Listen for end of Response video
         video_player.on('ended', wait_for_response_end);
       },
-      
+
       //this function handles the Response from the AJAX request to fetch the response_points
       fetch_response_points: function(e, detail){
         console.log('--IN FETCH_RESPONSE_POINTS--');
         console.log(e);
         console.log(detail);
       },
-      
+
       //this function handles the Response from the AJAX request to fetch the responses at a specific point
       fetch_responses: function(e, detail){
         console.log('--IN FETCH_RESPONSES--');
         console.log(e);
         console.log(detail);
+      },
+      _upload_topic: function() {
+        this.set('route.path', '/upload-topic');
+      },
+
+      _upload_response: function() {
+        var video_id = this.watch_route_data.video_id;
+        this.set('route.path', '/upload-response/' + video_id);
       }
 
     });
