@@ -94,14 +94,20 @@
     <app-route route="{{route}}"
                pattern="/watch/:video_id"
                data="{{watch_route_data}}"></app-route>
+
+    <iron-ajax id="video_ajax"
+      url="http://ec2-35-164-213-202.us-west-2.compute.amazonaws.com/endpoint/video/[[watch_route.video_id]]"
+      method="GET"
+      on-response="fetch_video"></iron-ajax>
+
     <iron-ajax id="points_ajax"
-      url="http://ec2-35-164-213-202.us-west-2.compute.amazonaws.com/endpoint/response-points/1"
+      url="http://ec2-35-164-213-202.us-west-2.compute.amazonaws.com/endpoint/response-points/[[watch_route.video_id]]"
       method="GET"
       handle-as="JSON"
       on-response= "fetch_response_points"></iron-ajax>
 
     <iron-ajax id="responses_ajax"
-      url="http://ec2-35-164-213-202.us-west-2.compute.amazonaws.com/endpoint/video/1/[[current_point]]"
+      url="http://ec2-35-164-213-202.us-west-2.compute.amazonaws.com/endpoint/video/[[watch_route.video_id]]/[[current_point]]"
       method="GET"
       handle-as="JSON"
       on-response= "fetch_responses"></iron-ajax>
@@ -122,8 +128,11 @@
     </paper-toolbar>
 
     <iron-pages id="pages" selected="[[route_data.page]]" attr-for-selected="name">
-      <div name="landingpage" class="page-item">
-        <vlogme-landing-page></vlogme-landing-page>
+      <div name="" class="page-item">
+        <vlogme-landing-page
+          latest_responses_endpoint="[[latest_responses_endpoint]]"
+          latest_topics_endpoint="[[latest_topics_endpoint]]">
+        </vlogme-landing-page>
       </div>
       <div name="upload-topic" class="page-item">
         <vlogme-upload-topic
@@ -135,8 +144,10 @@
           video_upload_endpoint="[[video_upload_endpoint]]">
         </vlogme-upload-response>
       </div>
-      <div name="" route="{{subroute}}" class="page-item">
-        <vlogme-player></vlogme-player>
+      <div name="watch" route="{{subroute}}" class="page-item">
+        <vlogme-player video_title="[[video_title]]"
+                       video_id="[[watch_route_data.video_id]]">
+        </vlogme-player>
         <vlogme-response-list></vlogme-response-list>
       </div>
     </iron-pages>
@@ -279,11 +290,12 @@
         console.log('--IN FETCH_RESPONSES--');
         console.log('e.detail.response =', e.detail.response);
       },
-
+      fetch_video: function(e, detail){
+        console.log('video fetched');
+      },
       _upload_topic: function() {
         this.set('route.path', '/upload-topic');
       },
-
       _upload_response: function() {
         var video_id = this.watch_route_data.video_id;
         this.set('route.path', '/upload-response/' + video_id);
