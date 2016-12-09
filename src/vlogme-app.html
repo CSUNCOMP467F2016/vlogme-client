@@ -91,6 +91,9 @@
                data="{{route_data}}"
                tail="{{subroute}}"></app-route>
 
+    <app-route route="{{route}}"
+               pattern="/watch/:video_id"
+               data="{{watch_route_data}}"></app-route>
     <iron-ajax id="points_ajax"
       url="http://ec2-35-164-213-202.us-west-2.compute.amazonaws.com/endpoint/response-points/1"
       method="GET"
@@ -120,8 +123,15 @@
       <div name="" class="page-item">
         <vlogme-landing-page></vlogme-landing-page>
       </div>
-      <div name="upload-topic"class="page-item">
-        <vlogme-upload-topic></vlogme-upload-topic>
+      <div name="upload-topic" class="page-item">
+        <vlogme-upload-topic
+          video_upload_endpoint="[[video_upload_endpoint]]">
+        </vlogme-upload-topic>
+      </div>
+      <div name="upload-response" route="{{subroute}}" class="page-item">
+        <vlogme-upload-response
+          video_upload_endpoint="[[video_upload_endpoint]]">
+        </vlogme-upload-response>
       </div>
       <div name="watch" route="{{subroute}}" class="page-item">
         <vlogme-player></vlogme-player>
@@ -282,7 +292,11 @@
       },
       _upload_topic: function() {
         this.set('route.path', '/upload-topic');
-        console.log('route path is now', this.route_data.page);
+      },
+
+      _upload_response: function() {
+        var video_id = this.watch_route_data.video_id;
+        this.set('route.path', '/upload-response/' + video_id);
       }
 
     });
